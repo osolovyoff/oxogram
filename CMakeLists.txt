@@ -1,0 +1,23 @@
+function(add_recursive current_dir sources_files)
+    file(GLOB files ${current_dir}/*.[h|cpp])
+    file(GLOB children RELATIVE ${PROJECT_SOURCE_DIR}/${current_dir} ${PROJECT_SOURCE_DIR}/${current_dir}/*)
+
+    foreach(child ${children})
+        if(IS_DIRECTORY ${PROJECT_SOURCE_DIR}/${current_dir}/${child})
+            add_recursive(${current_dir}/${child} ${sources_files})
+        else()
+            if(MSVC)
+                string(REPLACE "/" "\\" groupname ${current_dir})
+            endif()
+            set(filename ${PROJECT_SOURCE_DIR}/${current_dir}/${child})
+            source_group(${groupname} FILES ${filename})
+            set(${sources_files} ${${sources_files}} ${filename})
+        endif()        
+    endforeach()
+    set(${sources_files} ${${sources_files}} PARENT_SCOPE)
+endfunction(add_recursive)
+#_________________________________________________________________________________________
+cmake_minimum_required(VERSION 3.8)
+
+add_recursive(source PARSED_SOURCE)
+add_executable(${PROJECT_NAME} ${PARSED_SOURCE})
