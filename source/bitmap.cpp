@@ -31,18 +31,11 @@ void Bitmap::save()
     fclose(file_handle);
 }
 
-void Bitmap::draw()
+void Bitmap::get_pixel(const size_t x, const size_t y, int& r, int& g, int& b)
 {
-    //for (size_t i = 0; i<_width; i++)
-    //{
-    //    for (size_t j = 0; j<_height; j++)
-    //    {
-    //        const size_t x = i;
-    //        const size_t y = (_height - 1) - j;
-    //        draw_pixel(x, y, 125, 125, 125);
-    //    }
-    //}
-
+    r = _image[(x + y*_width) * 3 + 2];
+    g = _image[(x + y*_width) * 3 + 1];
+    b = _image[(x + y*_width) * 3 + 0];
 }
 
 void Bitmap::draw_pixel(const size_t x, const size_t y, int r, int g, int b)

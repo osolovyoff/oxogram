@@ -2,6 +2,23 @@
 #include <string>
 #include <memory>
 
+using byte = uint8_t;
+
+class Color
+{
+public:
+
+private:
+    union
+    {
+        byte rgb[3];
+        struct rgb
+        {
+            byte r, g, b;
+        };
+    };
+};
+
 class Bitmap
 {
     using byte = uint8_t;
@@ -10,7 +27,9 @@ public:
     ~Bitmap();
 
     void save();
-    void draw();
+
+    void get_pixel(const size_t x, const size_t y, int& r, int& g, int& b);
+
     void draw_pixel(const size_t x, const size_t y, int r, int g, int b);
     void draw_black(const size_t x, const size_t y, int value);
 
